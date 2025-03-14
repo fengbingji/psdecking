@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//www.unifloorwpc.com/main-sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.example.com/page1.html</loc>
+        <image:image>
+            <image:loc>https://www.example.com/images/red-dress-woman-smiling.jpg</image:loc>
+            <image:title>一位女士穿着红色连衣裙，面带微笑</image:title>
+            <image:caption>一位女士在阳光明媚的公园里穿着红色连衣裙微笑。</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://www.example.com/images/red-dress-woman-smiling-2.jpg</image:loc>
+            <image:title>一位女士穿着红色连衣裙，面带微笑</image:title>
+            <image:caption>一位女士在阳光明媚的公园里穿着红色连衣裙微笑。</image:caption>
+        </image:image>
+    </url>
+</urlset>

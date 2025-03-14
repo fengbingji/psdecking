@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>百度地图地址转坐标 (拖拽更新中心点坐标)</title>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            font-family: "微软雅黑";
+        }
+
+        #map_container {
+            width: 100%;
+            height: 500px; /* 可以根据需要调整地图高度 */
+        }
+
+        #address_input_container {
+            padding: 10px;
+        }
+
+        #address_input {
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        #get_coords_button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #coords_display {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hFzDZs5rTKCWZSEAxpcGqlkOCFzafqud"></script>
+</head>
+<body>
+<div id="address_input_container">
+    <input type="text" id="address_input" placeholder="请输入地址">
+    <button id="get_coords_button">获取地址坐标</button>
+</div>
+
+<div id="coords_display"></div>
+<div id="map_container"></div>
+
+<script type="text/javascript">
+    var map = new BMapGL.Map("map_container"); // 创建地图实例
+    var defaultPoint = new BMapGL.Point(113.16402014619217, 23.070825548884745); // 默认中心点 
+    map.centerAndZoom(defaultPoint, 11); // 初始化地图，设置中心点和缩放级别
+    map.enableScrollWheelZoom(true); // 允许滚轮缩放
+
+    var geocoder = new BMapGL.Geocoder(); // 创建地址解析器实例
+    var coordsDisplay = document.getElementById("coords_display");
+
+    //  初始显示中心点坐标
+    updateCenterCoordsDisplay();
+
+    //  地图拖拽事件监听
+    map.addEventListener("dragend", function(){
+        updateCenterCoordsDisplay();
+    });
+
+    document.getElementById("get_coords_button").addEventListener("click", function(){
+        var address = document.getElementById("address_input").value;
+        if (address) {
+            geocodeAddress(address);
+        } else {
+            coordsDisplay.innerHTML = "请输入地址";
+        }
+    });
+
+    function geocodeAddress(address) {
+        geocoder.getPoint(address, function(point){
+            if (point) {
+                displayCoordsAndMap(point, address);
+            } else {
+                coordsDisplay.innerHTML = "未能解析到该地址的坐标，请检查地址是否正确。";
+                map.clearOverlays(); // 清除地图上的覆盖物
+                map.centerAndZoom(defaultPoint, 11); //  恢复默认地图中心
+                updateCenterCoordsDisplay(); // 更新中心点坐标为默认中心点
+            }
+        }, "新加坡"); //  指定城市为新加坡，如果您希望可以解析全球地址，可以删除或修改这个参数
+    }
+
+    function displayCoordsAndMap(point, address) {
+        coordsDisplay.innerHTML = "地址： " + address + "<br/>坐标： 经度 " + point.lng + ", 纬度 " + point.lat;
+
+        map.centerAndZoom(point, 15); //  设置地图中心为解析出的坐标
+        map.clearOverlays(); // 清除之前的覆盖物
+        var marker = new BMapGL.Marker(point);  // 创建标注
+        map.addOverlay(marker);               // 将标注添加到地图中
+        updateCenterCoordsDisplay(); //  更新中心点坐标为新地址的坐标
+    }
+
+    function updateCenterCoordsDisplay() {
+        var centerPoint = map.getCenter(); // 获取地图中心点坐标
+        coordsDisplay.innerHTML = "地图中心点坐标： 经度 " + centerPoint.lng + ", 纬度 " + centerPoint.lat;
+    }
+
+</script>
+</body>
+</html>

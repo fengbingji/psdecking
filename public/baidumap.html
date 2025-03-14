@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>百度地图显示标注和周边博物馆</title>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            font-family: "微软雅黑";
+        }
+
+        #map_container {
+            width: 100%;
+            height: 500px; /* 可以根据需要调整地图高度 */
+        }
+
+        #museum_list {
+            padding: 10px;
+        }
+
+        #museum_list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #museum_list li {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hFzDZs5rTKCWZSEAxpcGqlkOCFzafqud"></script>
+</head>
+<body>
+<div id="map_container"></div>
+<div id="museum_list">
+    <h2>周边博物馆列表：</h2>
+    <ul id="museum_ul"></ul>
+</div>
+
+<script type="text/javascript">
+    // 初始化地图
+    var map = new BMapGL.Map("map_container");
+    var point = new BMapGL.Point(113.16402014619217, 23.070825548884745); //  指定坐标，这里以北京天安门为例，请替换为你需要的坐标
+    map.centerAndZoom(point, 15); //  设置地图中心和缩放级别
+    map.enableScrollWheelZoom(true); // 允许滚轮缩放
+
+    // 添加标注
+    var marker = new BMapGL.Marker(point);
+    map.addOverlay(marker);
+
+    // 创建信息窗口
+    var infoWindow = new BMapGL.InfoWindow("指定坐标位置", { //  信息窗口内容
+        title: "标注点"  // 信息窗口标题
+    });
+    marker.addEventListener("click", function(){
+        this.openInfoWindow(infoWindow); //  点击标注开启信息窗口
+    });
+
+    //  搜索周边博物馆
+    var localSearch = new BMapGL.LocalSearch(map, {
+        //renderOptions: {map: map, panel: "museum_ul"}, //  结果呈现的地图和列表容器
+        onSearchComplete: function(results){
+            //  搜索完成后的回调函数
+            var museumListUl = document.getElementById("museum_ul");
+            museumListUl.innerHTML = ""; // 清空列表
+            console.log(results)
+
+            if (localSearch.getStatus() == BMAP_STATUS_SUCCESS){
+                var s = [];
+                for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                    var poi = results.getPoi(i);
+                    s.push("<li>");
+                    s.push("<h3>" + poi.title + "</h3>");
+                    s.push("<p>地址：" + poi.address + "</p>");
+                    if (poi.phoneNumber) {
+                        s.push("<p>电话：" + poi.phoneNumber + "</p>");
+                    }
+                    s.push("</li>");
+                }
+                museumListUl.innerHTML = s.join("");
+            } else {
+                museumListUl.innerHTML = "<li>未找到周边博物馆。</li>";
+            }
+        }
+    });
+    localSearch.searchNearby("博物馆", point, 100); //  以指定坐标为中心，搜索周边1000米内的博物馆
+</script>
+</body>
+</html>
