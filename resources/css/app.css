@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@source "../views";
+body{
+    @apply bg-red-500;
+}
+@theme{
+    --menu-font-size-auto:1em;
+    --menu-font-size-2:1.2em;
+    --menu-font-size-3:1.5em;
+}
+@utility menu-*{
+    display: flex;
+    font-size: calc(--value(integer)em * 2);
+    >li{
+        @apply p-4;
+    }
+}
+
+@custom-variant theme-midnight {
+    &:where([data-theme="midnight"] *) {
+        @slot;
+    }
+}
