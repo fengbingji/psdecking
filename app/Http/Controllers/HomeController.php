@@ -4,13 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContentType;
 use App\Models\Category;
-use App\Services\JsonLd;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Spatie\SchemaOrg\Graph;
-use Spatie\SchemaOrg\ImageObject;
-use Spatie\SchemaOrg\Schema;
-use Spatie\SchemaOrg\Thing;
 
 class HomeController extends Controller
 {
@@ -23,7 +17,8 @@ class HomeController extends Controller
             ->get();
         $blocks = $news = [];
         $cert['images'] = [];
-        return view('index', compact('banners', 'categories','blocks','news','cert'));
+
+        return view('index', compact('banners', 'categories', 'blocks', 'news', 'cert'));
     }
 
     public function createCategoryTranslationsFactory()

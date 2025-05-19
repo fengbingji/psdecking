@@ -27,7 +27,6 @@ class SetLocale
         $request->attributes->set('locale', $locale);
         \URL::defaults(['locale' => $locale]);
         \View::share('lang', $locale);
-
         return $next($request);
     }
 }
