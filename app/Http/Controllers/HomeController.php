@@ -10,6 +10,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        // return $request->get('locale');
         $banners = [];
         $categories = Category::where('content_type', ContentType::Product)
             ->where('parent_id', 3)

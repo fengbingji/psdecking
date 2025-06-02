@@ -1,94 +1,4 @@
-
-<header class="page-header">
-    <div class="rd-navbar-wrap">
-        <nav class="rd-navbar">
-            <div class="rd-navbar-inner">
-                <div class="rd-navbar-panel">
-                    <a href="index.html" class="brand">
-                        Logo
-                    </a>
-                </div>
-
-                <div class="rd-navbar-nav-wrap">
-                    <ul class="rd-navbar-nav">
-                        <li class="rd-navbar--has-dropdown">
-                            <a href="#">首页</a>
-                            <ul class="rd-navbar-dropdown">
-                                <li><a href="#">子菜单项 1</a></li>
-                                <li><a href="#">子菜单项 2</a></li>
-                            </ul>
-                        </li>
-                        <li class="rd-navbar--has-megamenu">
-                            <a href="#">关于我们</a>
-                            <div class="rd-navbar-megamenu">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h6>标题列 1</h6>
-                                        <ul>
-                                            <li><a href="#">Mega 菜单项 1.1</a></li>
-                                            <li><a href="#">Mega 菜单项 1.2</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h6>标题列 2</h6>
-                                        <ul>
-                                            <li><a href="#">Mega 菜单项 2.1</a></li>
-                                            <li><a href="#">Mega 菜单项 2.2</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h6>标题列 3</h6>
-                                        <p>一些描述性文字。</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="#">服务</a></li>
-                        <li><a href="#">联系我们</a></li>
-                    </ul>
-                </div>
-
-                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap">
-                    <span></span>
-                </button>
-            </div>
-        </nav>
-    </div>
-</header>
-
-
-<script>
-    o = $('.rd-navbar');
-
-    o.RDNavbar({
-        responsive: {
-            0: {
-                layout: 'rd-navbar-fixed'
-            },
-            768: {
-                layout: 'rd-navbar-fullwidth'
-            },
-            1200: {
-                layout: 'rd-navbar-static',
-                stickUpClone: false,
-                stickUpOffset:'120%'
-            }
-        }
-    })
-</script>
-
-
-<header data-theme="midnight">
-    <ul class="menu-3 text-blue-500 theme-midnight:text-black">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>
-
-    <div class="h-32 bg-red-400 text-white text-center">
-        this is a test
-    </div>
-
+<header>
 
     <div class="bg-gray-100 py-2">
         <div class="container m-auto flex text-gray-400">
@@ -120,7 +30,7 @@
         <div class="container mx-auto my-2 flex items-center space-x-4 bg-white">
             <div class="mr-auto">
                 <a href="/">
-                    <img class="h-12" src="/images/logo.png?v=3" alt="{{ config("{$lang}.site_name") . ' - ' . config("{$lang}.site_title") }}" />
+                    <img class="h-12" src="/storage/{{ config("setting.logo") }}" alt="{{ config("{$lang}.site_name") . ' - ' . config("{$lang}.site_title") }}" />
                 </a>
             </div>
 
@@ -138,31 +48,52 @@
                     中文
                 </a>
             </div>
-            <div class="menu-button block md:hidden">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
         </div>
     </div>
 
-    <nav class="sticky top-0 z-50 mb-0 hidden bg-white/70 shadow-lg backdrop-blur sm:block" id="sticker">
+    <div class="rd-navbar-wrap ">
+        <nav class="rd-navbar md:shadow-lg md:backdrop-blur !bg-yellow-500/30 ">
+            <div class="rd-navbar-inner bg-red-100">
+                <div class="rd-navbar-panel bg-green-100">
+                    <a href="/{{request()->get('locale')}}">
+                        <img class="h-12" src="/storage/{{ config("setting.logo") }}" alt="{{ config("{$lang}.site_name") . ' - ' . config("{$lang}.site_title") }}" />
+                    </a>
+                </div>
+                <div class="rd-navbar-nav-wrap md:!flex items-center">
+                    <ul class="rd-navbar-nav md:flex-1">
+                        @foreach (collect($menus)->where('parent_id', 0)->toArray() as $index => $p_menu)
+                            <li class="{{ $index == 1 ? 'active' : '' }}">
+                                <a href="{{ $p_menu['url'] ? '/' . request()->get('locale') . $p_menu['url'] : 'javascript:' }}">{{ $p_menu['name'] }}</a>
+                                @if (collect($menus)->where('parent_id', $p_menu['id'])->count() > 0)
+                                    <ul class="rd-navbar-dropdown">
+                                        @foreach (collect($menus)->where('parent_id', $p_menu['id'])->toArray() as $s_menu)
+                                            <li>
+                                                <a href="/{{ request()->get('locale') . $s_menu['url'] }}">{{ $s_menu['name'] }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div>
+                        <a class="block border border-brown px-4 py-2 text-brown duration-200 hover:bg-brown hover:text-white" href="/{{ $lang }}/feedback">
+                            {{ __('GET A QUOTE') }}
+                        </a>
+                    </div>
+                </div>
+
+                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap">
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <nav class="sticky top-0 z-50 mb-0 hidden bg-white/70 shadow-lg backdrop-blur " id="sticker">
         <div class="container mx-auto flex flex-col flex-wrap justify-between py-3 font-bold md:flex-row md:items-center">
             <div class="main-nav flex-1 overflow-hidden hover:overflow-visible">
-                <ul class="parent mr-16 flex flex-col justify-around md:flex-row">
-                    @foreach (collect($menus)->where('parent_id', 0)->toArray() as $index => $p_menu)
-                        <li class="{{ $index == 1 ? 'active' : 'group' }}">
-                            <a class="group-hover:text-brown" href="{{ $p_menu['url'] ? '/' . request('lang') . $p_menu['url'] : 'javascript:' }}">{{ $p_menu['name'] }}</a>
-                            @if (collect($menus)->where('parent_id', $p_menu['id'])->count() > 0)
-                                <ul class="son">
-                                    @foreach (collect($menus)->where('parent_id', $p_menu['id'])->toArray() as $s_menu)
-                                        <li><a href="/{{ request('lang') . $s_menu['url'] }}">{{ $s_menu['name'] }}</a></li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
+
             </div>
 
             <div class="mr-4">
@@ -188,7 +119,25 @@
     </nav>
 </header>
 
+<script>
+    o = $('.rd-navbar');
 
+    o.RDNavbar({
+        responsive: {
+            0: {
+                layout: 'rd-navbar-fixed'
+            },
+            768: {
+                layout: 'rd-navbar-fullwidth'
+            },
+            1200: {
+                layout: 'rd-navbar-static',
+                stickUpClone: false,
+                stickUpOffset:'120%'
+            }
+        }
+    })
+</script>
 
 
 

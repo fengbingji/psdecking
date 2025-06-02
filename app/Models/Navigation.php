@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 
 /**
- *
- *
  * @property int $id
  * @property int|null $order 排序
  * @property string|null $name 名称
@@ -21,6 +19,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \App\Models\NavigationTranslation $translation
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\NavigationTranslation> $translations
  * @property-read int|null $translations_count
+ *
  * @method static Builder<static>|Navigation newModelQuery()
  * @method static Builder<static>|Navigation newQuery()
  * @method static Builder<static>|Navigation ordered(string $direction = 'asc')
@@ -33,6 +32,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Navigation whereParentId($value)
  * @method static Builder<static>|Navigation whereShow($value)
  * @method static Builder<static>|Navigation whereUrl($value)
+ *
  * @mixin \Eloquent
  */
 class Navigation extends Model implements Sortable
@@ -40,7 +40,9 @@ class Navigation extends Model implements Sortable
     use ModelTree;
 
     protected $guarded = [];
+
     public $titleColumn = 'name';
+
     public $timestamps = false;
 
     public function translations(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany

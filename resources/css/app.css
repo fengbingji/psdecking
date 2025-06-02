@@ -1,23 +1,25 @@
 @import "tailwindcss";
 @source "../views";
-body{
-    @apply bg-red-500;
-}
-@theme{
-    --menu-font-size-auto:1em;
-    --menu-font-size-2:1.2em;
-    --menu-font-size-3:1.5em;
-}
-@utility menu-*{
-    display: flex;
-    font-size: calc(--value(integer)em * 2);
-    >li{
-        @apply p-4;
-    }
-}
 
-@custom-variant theme-midnight {
-    &:where([data-theme="midnight"] *) {
-        @slot;
-    }
-}
+/*@theme{*/
+/*    --menu-font-size-auto:1em;*/
+/*    --menu-font-size-2:1.2em;*/
+/*    --menu-font-size-3:1.5em;*/
+/*}*/
+/*@utility menu-*{*/
+/*    display: flex;*/
+/*    font-size: calc(--value(integer)em * 2);*/
+/*    >li{*/
+/*        @apply p-4;*/
+/*    }*/
+/*}*/
+
+/*@custom-variant theme-midnight {*/
+/*    &:where([data-theme="midnight"] *) {*/
+/*        @slot;*/
+/*    }*/
+/*}*/
+
+/*.rd-navbar-static .rd-navbar-nav > li.active > a, .rd-navbar-static .rd-navbar-nav > li.opened > a, .rd-navbar-static .rd-navbar-nav > li.focus > a, .rd-navbar-static .rd-navbar-nav > li > a:hover {*/
+/*    @apply !text-amber-700;*/
+/*}*/
